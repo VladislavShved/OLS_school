@@ -14,6 +14,7 @@ namespace WindowsFormsApplication1
     {
         private List<Point> _points;
         public List<int> B;
+        public int[,] G;
         public Form1()
         {
             InitializeComponent();
@@ -28,13 +29,13 @@ namespace WindowsFormsApplication1
 
             foreach (var point in _points)
             {
-                e.Graphics.FillEllipse(new SolidBrush(Color.Red), point.X, point.Y, 5, 5);
+                e.Graphics.FillEllipse(new SolidBrush(Color.Red), point.X + Width / 2, point.Y + Height / 2, 5, 5);
             }
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
-            _points.Add(new Point(e.X, e.Y));
+            _points.Add(new Point(e.X-Width/2, e.Y-Height/2));
             Refresh();
         }
 
@@ -47,8 +48,19 @@ namespace WindowsFormsApplication1
     
                 }
                 B.Add(temp);
-            }
 
+            }
+            G = new int[_points.Count, _points.Count];
+            for (int i = 0; i < _points.Count; i++)
+            {
+                for (int j = 0; j < _points.Count; j++)
+                {
+                    for (int k = 0; k < _points.Count; k++)
+                    {
+                        G[i, j] += (int)Math.Pow(_points[k].X, i) * (int)Math.Pow(_points[k].X, j);
+                    }
+                }
+            }
         }
     }
 }
